@@ -10,9 +10,9 @@
 # """
 
 
-from Asgard import ponteMidgard
+from Asgard import Bifrost
 
-cursor = ponteMidgard.connection.cursor()
+cursor = Bifrost.connection.cursor()
 cursor.execute("SELECT id, nome, cidade, salario from cliente")
 user1 = cursor.fetchone()  # retrieve the first row
 print('\nImpressao de campo a campo')
