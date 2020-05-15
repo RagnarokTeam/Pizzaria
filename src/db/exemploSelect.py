@@ -12,6 +12,7 @@
 # inicio da bifrost
 from Asgard import Bifrost
 
+
 # variavel "cursor" pode ser alterada para qualquer outro nome de sua escolha
 cursor = Bifrost.connection.cursor()
 cursor.execute("SELECT id, nome, cidade, salario from cliente")
