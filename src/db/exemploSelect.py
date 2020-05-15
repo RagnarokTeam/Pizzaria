@@ -9,9 +9,10 @@
 # Referencias:
 # """
 
-
+# inicio da bifrost
 from Asgard import Bifrost
 
+# variavel "cursor" pode ser alterada para qualquer outro nome de sua escolha
 cursor = Bifrost.connection.cursor()
 cursor.execute("SELECT id, nome, cidade, salario from cliente")
 user1 = cursor.fetchone()  # retrieve the first row
@@ -27,3 +28,7 @@ for row in all_rows:
     # row[0] retorna a primeira coluna da query (id),
     # row[1] retorna a segunda coluna (nome)
     print('{0}, {1}, {2}, {3}'.format(row[0], row[1], row[2], row[3]))
+
+
+# fim da bifrost
+Bifrost.connection.close()

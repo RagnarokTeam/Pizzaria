@@ -1,7 +1,7 @@
 """
 Data........: 2020-05-14
 Projeto.....: RagnarokProject - Pizzaria
-Arquivo.....: ponteMidgard.py
+Arquivo.....: Bifrost.py
 Descrição...: Conexão generalizada para toda a aplicação
 Autor.......: Jefferson de Lima
 Observações.: 2020-05-14 - [R00] Criação do Arquivo - Versao 1.00
@@ -24,7 +24,5 @@ if not os.path.exists(fileDB):
 else:
     pass
 
-    # Criando a base de dados
+# Criando a base de dados
 connection = sqlite3.connect(fileDB)
-
-# Get a cursor object
