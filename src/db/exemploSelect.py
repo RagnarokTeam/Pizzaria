@@ -1,6 +1,6 @@
 # """
 # Data........: 2020-05-15
-# Projeto.....: Pizzaria-Ragnarok
+# Projeto.....: Pizzaria-Ragnarok 
 # Arquivo.....: exemploSelect.py
 # Descrição...: Exemplo de consulta utilizando a Bifrost fazendo a consulta de dados na tabela cliente de todos regitros
 # Autor.......: Jefferson de Lima - Eq. Ragnarok
@@ -10,6 +10,7 @@
 # """
 
 # inicio da bifrost
+
 from Asgard import Bifrost
 
 
