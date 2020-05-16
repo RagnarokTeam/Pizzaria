@@ -2,7 +2,7 @@
 # Data........: 2020-05-15
 # Projeto.....: Pizzaria-Ragnarok
 # Arquivo.....: exemploSelect.py
-# Descrição...: Exemplo de consulta utilizando a ponte midgard fazendo a consulta de dados na tabela cliente de todos regitros
+# Descrição...: Exemplo de consulta utilizando a Bifrost fazendo a consulta de dados na tabela cliente de todos regitros
 # Autor.......: Jefferson de Lima - Eq. Ragnarok
 # Observações.: 2020-05-08 - [R00] Criação do Arquivo - Versao 1.00
 #
