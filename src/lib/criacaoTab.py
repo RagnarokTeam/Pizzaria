@@ -9,28 +9,14 @@
 # Referencias:
 # ""
 
-import os
-import sqlite3
+from Asgard import Bifrost
 
-# definindo um arquivo para as tabelas
-fileDB = 'C:\\Users\Family\Documents\GitHub\LUL\Pizzaria\src\db\hela.sqlite'
 
-# excluindo o arquivo de banco de dados
-print('Excluindo o arquivo de banco de dados, caso exista.')
-if os.path.exists(fileDB):
-    os.remove(fileDB)
-else:
-    print(f'O arquivo: {fileDB} não existe!')
-
-# Criando a base de dados
-print(f'Criado um novo arquivo {fileDB}')
-connection = sqlite3.connect(fileDB)
-
-# Get a cursor object
-cursor = connection.cursor()
-
+# variavel "cursor" pode ser alterada para qualquer outro nome de sua escolha
+cursor = Bifrost.connection.cursor()
 
 # Criacao de tabelas
+
 
 def tab_cliente():
     cursor.execute('CREATE TABLE IF NOT EXISTS cliente \
@@ -66,3 +52,6 @@ def itens_pedido():
 
 
 itens_pedido()
+
+# fechando conecção
+Bifrost.connection.close()
