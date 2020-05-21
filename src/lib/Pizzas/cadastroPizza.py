@@ -10,7 +10,7 @@
 # ""
 
 
-from Asgard import Bifrost
+from src.db.Asgard import Bifrost
 
 
 # variavel "cursor" pode ser alterada para qualquer outro nome de sua escolha
@@ -50,7 +50,7 @@ def cad_pizza():  # função que cadastra as pizzas do cardápio
     cursor.executemany("INSERT INTO pizza(CODIGO_PIZ, TIPO_PIZ, NOME_PIZ, INGREDIENTES, VALOR_CUSTO) \
                     values (?, ?, ?, ?, ?)", lista_pizza)
 
-    connection.commit()
+    cursor.connection.commit()
     print('Dados inseridos com sucesso!')
 
 
