@@ -29,7 +29,7 @@ tab_cliente()
 
 def tab_pizza():
     cursor.execute('CREATE TABLE IF NOT EXISTS pizza \
-                    (CODIGO_PIZ    INTEGER  NOT NULL    PRIMARY KEY AUTOINCREMENT ,                     DATA_CRIACAO date,                     DATA_INATIVACAO date,                     NOME_PIZ string(100),                     INGREDIENTES text,                     VALOR_CUSTO numeric(10, 2))'
+                    (CODIGO_PIZ    INTEGER  NOT NULL    PRIMARY KEY AUTOINCREMENT ,      TIPO_PIZ string (10),               DATA_CRIACAO date,                     DATA_INATIVACAO date,                     NOME_PIZ string(100),                     INGREDIENTES text,                     VALOR_CUSTO numeric(10, 2))'
                    )
 
 
