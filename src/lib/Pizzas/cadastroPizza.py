@@ -11,6 +11,8 @@
 
 
 from src.db.Asgard import Bifrost
+from datetime import datetime
+getdate = datetime.now().strftime("%d/%m/%Y")
 
 
 # variavel "cursor" pode ser alterada para qualquer outro nome de sua escolha
@@ -19,36 +21,36 @@ cursor = Bifrost.connection.cursor()
 
 def cad_pizza():  # função que cadastra as pizzas do cardápio
 
-    lista_pizza = [(1, 'Salgada', 'ALEO E OLEO', 'Alho frito picado, parmesão ralado e azeitonas', 22.90),
-                   (2, 'Salgada', 'ALLICI',
+    lista_pizza = [( 'Salgada',getdate, 'ALEO E OLEO', 'Alho frito picado, parmesão ralado e azeitonas', 22.90),
+                   ( 'Salgada',getdate, 'ALLICI',
                     'Alicci importado, rodelas de tomate, parmesão e azeitonas', 28.90),
-                   (3, 'Salgada', 'ATUM', 'Atum, cebola e azeitona', 22.90),
-                   (4, 'Salgada', 'BACON',
+                   ( 'Salgada',getdate, 'ATUM', 'Atum, cebola e azeitona', 22.90),
+                   ( 'Salgada',getdate, 'BACON',
                     'Bacon coberto com muzzarela e azeitonas', 26.90),
-                   (5, 'Salgada', 'BERINGELA',
+                   ( 'Salgada',getdate, 'BERINGELA',
                     'Beringela, cobertura com muzzarela, manjericão e parmesão', 23.90),
-                   (6, 'Salgada', 'CAIPIRA',
+                   ( 'Salgada',getdate, 'CAIPIRA',
                     'Frango desfiado, coberto com catupiry e milho verde e azeitonas', 26.90),
-                   (7, 'Salgada', 'CALABRESA',
+                   ( 'Salgada',getdate, 'CALABRESA',
                     'Linguiça cababresa, cebola e azeitonas', 19.90),
-                   (8, 'Salgada', 'CINCO QUEIJOS',
+                   ( 'Salgada',getdate, 'CINCO QUEIJOS',
                     'Muzzarela, parmesão, catupiry, gorgonzola e provolone', 29.90),
-                   (9, 'Salgada', 'ESCAROLA',
+                   ( 'Salgada',getdate, 'ESCAROLA',
                     'Escarola refogada, muzzarela, e azeitonas', 24.90),
-                   (10, 'Salgada', 'EXECUTIVA',
+                   ( 'Salgada',getdate, 'EXECUTIVA',
                     'Milho Verde, catupiry e azeitonas', 22.90),
-                   (11, 'Salgada', 'PERUANA',
+                   ( 'Salgada',getdate, 'PERUANA',
                     'Atum, cebola, muzarela e azeitonas', 26.90),
-                   (12, 'Salgada', 'PALMITO',
+                   ('Salgada',getdate, 'PALMITO',
                     'Palmito com muzarela e azeitonas', 26.90),
-                   (13, 'Doce', 'BANANA',
+                   ( 'Doce',getdate, 'BANANA',
                     'Banana fatiada com, cobertura com leite condensado e canela em pó', 21.90),
-                   (14, 'Doce', 'BRIGADEIRO',
+                   ( 'Doce',getdate, 'BRIGADEIRO',
                     'Chocolate, leite condensado e chocolate granlado', 23.90),
-                   (15, 'Doce', 'PRESTIGIO', 'Chocolate coberta com côco', 23.90)]
+                   ( 'Doce',getdate, 'PRESTIGIO', 'Chocolate coberta com côco', 23.90)]
 
-    cursor.executemany("INSERT INTO pizza(CODIGO_PIZ, TIPO_PIZ, NOME_PIZ, INGREDIENTES, VALOR_CUSTO) \
-                    values (?, ?, ?, ?, ?)", lista_pizza)
+    cursor.executemany("INSERT INTO pizza( TIPO_PIZ,DATA_CRIACAO, NOME_PIZ, INGREDIENTES, VALOR_CUSTO) \
+                    values ( ?,?, ?, ?, ?)", lista_pizza)
 
     cursor.connection.commit()
     print('Dados inseridos com sucesso!')
@@ -58,4 +60,4 @@ def cad_pizza():  # função que cadastra as pizzas do cardápio
 cad_pizza()
 
 # fechando conexão
-Bifrost.connection.close()
+cursor.connection.close()

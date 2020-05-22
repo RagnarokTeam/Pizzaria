@@ -10,11 +10,12 @@ Referencias:
 """
 
 
+
 import os
 import sqlite3
 
 # definindo um arquivo para clientes
-fileDB = 'C:\\Users\jeffe\git\PIZZARIA-RAGNAROK\src\db\cliente.sqlite'
+fileDB = 'C:\\Users\jeffe\git\Pizzaria\src\db\hela.sqlite'
 
 # verificando se arquivo de banco de dados existe
 print(f'Verificando se arquivo {fileDB} existe.')

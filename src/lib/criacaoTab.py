@@ -9,7 +9,7 @@
 # Referencias:
 # ""
 
-from Asgard import Bifrost
+from src.db.Asgard import Bifrost
 
 
 # variavel "cursor" pode ser alterada para qualquer outro nome de sua escolha
@@ -38,7 +38,8 @@ def tab_pizza():
     cursor.execute('CREATE TABLE IF NOT EXISTS pizza \
                     (CODIGO_PIZ    INTEGER  NOT NULL    PRIMARY KEY AUTOINCREMENT,\
                      TIPO_PIZ string(8), DATA_CRIACAO date,\
-                     DATA_INATIVACAO date, NOME_PIZ string(100), INGREDIENTES text, VALOR_CUSTO numeric(10, 2))'
+                     DATA_INATIVACAO date, NOME_PIZ string(100), '
+                   'INGREDIENTES text, VALOR_CUSTO numeric(10, 2))'
                    )
 
 
