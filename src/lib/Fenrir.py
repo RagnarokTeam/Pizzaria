@@ -16,4 +16,4 @@ def GETDATE():
     return data
 
 
-print(GETDATE())
+
