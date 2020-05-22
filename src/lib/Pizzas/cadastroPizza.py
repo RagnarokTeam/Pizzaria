@@ -11,8 +11,7 @@
 
 
 from src.db.Asgard import Bifrost
-from datetime import datetime
-from src.lib.Pizzas.Fenrir import GETDATE
+from src.lib.Fenrir import GETDATE
 
 
 # variavel "cursor" pode ser alterada para qualquer outro nome de sua escolha
