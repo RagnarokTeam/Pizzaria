@@ -50,7 +50,7 @@ def cad_pizza():  # função que cadastra as pizzas do cardápio
                    ( 'Doce',GETDATE(), 'PRESTIGIO', 'Chocolate coberta com côco', 23.90)]
 
     cursor.executemany("INSERT INTO pizza( TIPO_PIZ,DATA_CRIACAO, NOME_PIZ, INGREDIENTES, VALOR_CUSTO) \
-                    values ( ?,?, ?, ?, ?)", lista_pizza)
+                    values (?, ?, ?, ?, ?)", lista_pizza)
 
     cursor.connection.commit()
     print('Dados inseridos com sucesso!')
