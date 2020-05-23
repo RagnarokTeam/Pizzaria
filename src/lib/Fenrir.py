@@ -2,7 +2,7 @@
 Data........: 2020-05-14
 Projeto.....: RagnarokProject - Pizzaria
 Arquivo.....: Fenrir.py
-Descrição...: Desacorrentamento generalizada para toda a aplicação
+Descrição...: Desacorrentamento generalizada para toda a aplicação utilizando função
 Autor.......: Jefferson de L. Matos - Eq. Ragnarok
 Observações.: 2020-05-22 - [R00] Criação do Arquivo - Versao 1.00
               ...
@@ -19,7 +19,7 @@ def GETDATE():
 def selectValorPadraoPizza(Tamanho,nomePizza):
     # inicialmente vou usar apenas por nome mas o correto é se usar o cod
     cursor = Bifrost.connection.cursor()
-
+                                    0           1           2
     cursor.execute('SELECT DISTINCT CODIGO_PIZ,NOME_PIZ, VALOR_CUSTO FROM PIZZA '
                    'WHERE DATA_INATIVACAO IS NULL'
                    ' AND NOME_PIZ LIKE ?', ('%' + nomePizza + '%',))
@@ -29,9 +29,9 @@ def selectValorPadraoPizza(Tamanho,nomePizza):
     # verificando qual a porcentagem usar
     if data is not None:
         valorPadrao = data[2]
-        if Tamanho == 'grande':
+        if Tamanho == 'gigante':
             valorPadrao = valorPadrao * 1.35
-        elif Tamanho == 'media':
+        elif Tamanho == 'grande':
             valorPadrao = valorPadrao * 1.25
         else:
             valorPadrao = valorPadrao * 1.15
@@ -63,12 +63,9 @@ def CalculaValorFinalPizza(Tamanho, nomePizza, meia = 0, nomePizza2 = 'null' ):
 
     return valorPizza
 
+def ListarPizzasCadastradas():
+    cursor = Bifrost.connection.cursor()
+    cursor.execute('SELECT * FROM PIZZA',)
 
-
-
-
-
-
-
-
-CalculaValorFinalPizza('media', 'aleo', 1,'PERUANA')
+    cursor.connection.close()
+    return  0
