@@ -32,6 +32,7 @@ def todosRelatorios():
     Fenrir.limparTelaOS()
     opcaoRelat = 0
 
+
     while opcaoRelat != 5:
         print('[1] - Dados do Clientes')
         print('[2] - Detalhamentos cliente')
