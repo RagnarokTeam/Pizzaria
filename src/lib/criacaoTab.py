@@ -25,7 +25,7 @@ def tab_cliente():
     cursor.execute('CREATE TABLE IF NOT EXISTS cliente \
                    (CODIGO_CLI  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, TEL_FIXO string(15), \
                    TEL_CEL string(15), NOME_CLI string(40), ENDERECO string(30), NR_END string(10), \
-                    COMPLEMENTO string(25), BAIRRO string(20), CIDADE string(20), UF string(02))'
+                    COMPLEMENTO string(25), BAIRRO string(20), CIDADE string(20), UF string(02)),DATA_CADASTRO date, DATA_INATIVO date'
                    )
 
 tab_cliente()
