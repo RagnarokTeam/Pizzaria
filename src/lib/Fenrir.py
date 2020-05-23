@@ -19,7 +19,6 @@ def GETDATE():
 def selectValorPadraoPizza(Tamanho,nomePizza):
     # inicialmente vou usar apenas por nome mas o correto é se usar o cod
     cursor = Bifrost.connection.cursor()
-                                    0           1           2
     cursor.execute('SELECT DISTINCT CODIGO_PIZ,NOME_PIZ, VALOR_CUSTO FROM PIZZA '
                    'WHERE DATA_INATIVACAO IS NULL'
                    ' AND NOME_PIZ LIKE ?', ('%' + nomePizza + '%',))
