@@ -42,9 +42,12 @@ def limparTelaOS():
 def limparTelaIdle():
     print('\n' * 40)
 
+def limparTela():
+    print('\n' * 5)
+
 
 def cabecalhoMenu():
-    limparTelaIdle()
+    limparTela()
     print('  _________________')
     print(' |  MASTER-PIZZAS  | ')
     print(' |_________________|')
