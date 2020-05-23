@@ -10,7 +10,7 @@ Referencias:
 """
 from datetime import datetime
 from src.db.Asgard import Bifrost
-
+import os
 
 def GETDATE():
     data = datetime.now().strftime("%d/%m/%Y")
@@ -68,3 +68,30 @@ def ListarPizzasCadastradas():
 
     cursor.connection.close()
     return  0
+
+
+def limparTelaOS():
+    if os.system == 'nt':
+        os.system('cls')
+    else:
+        os.system('clear')
+
+def cabecalhoMenu():
+    limparTela()
+    print('  _________________')
+    print(' |  MASTER-PIZZAS  | ')
+    print(' |_________________|')
+    print(' \                / ')
+    print('  \              / ')
+    print('   \            / ')
+    print('    \          / ')
+    print('     \        /')
+    print('      \      / ')
+    print('       \    / ')
+    print('        \  / ')
+    print('         \/')
+
+    print('\n')
+
+def pause():
+    programPause = input("\nPressione <ENTER> para continuar...")

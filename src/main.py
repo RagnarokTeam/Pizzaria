@@ -11,13 +11,11 @@
 
 import os
 
-from sources.lib import library
+from src.lib import Fenrir
 
-def limparTelas():
-    print('\n' * 40)
 
 def cadastroCliente():
-    limparTelas()
+    Fenrir.limparTelaOS()
     input('Telefone Fixo: ')
     input('Telefone Celular: ')
     input('Nome Completo: ')
@@ -29,37 +27,35 @@ def cadastroCliente():
     input('UF: ')
     input('CEP: ')
 
+
 def todosRelatorios():
-    limparTelas()
+    Fenrir.limparTelaOS()
     opcaoRelat = 0
 
     while opcaoRelat != 5:
-      print('[1] - Dados do Clientes')
-      print('[2] - Detalhamentos cliente')
-      print('[3] - Pizzas')
-      print('[4] - Pedidos')
-      print('[6] - Voltar')
-      opcaoRelat = eval(input('Digite qual relatório você quer abrir: '))
+        print('[1] - Dados do Clientes')
+        print('[2] - Detalhamentos cliente')
+        print('[3] - Pizzas')
+        print('[4] - Pedidos')
+        print('[6] - Voltar')
+        opcaoRelat = eval(input('Digite qual relatório você quer abrir: '))
 
-      if opcaoRelat == 1:
-          input('que')
-      elif opcaoRelat == 2: 
-          input('oi')
-      elif opcaoRelat == 3: 
-          input('hello')
-      elif opcaoRelat == 4:
-          input('hehe')
-      else: 
-          menuPrincipal()
-           
+        if opcaoRelat == 1:
+            input('que')
+        elif opcaoRelat == 2:
+            input('oi')
+        elif opcaoRelat == 3:
+            input('hello')
+        elif opcaoRelat == 4:
+            input('hehe')
+        else:
+            menuPrincipal()
 
-
-    
 
 def menuPrincipal():
     opcao = 0
     while opcao != 9:
-        library.cabecalhoMenu()
+        Fenrir.cabecalhoMenu()
         print('MENU PRINCIPAL')
         print('[1] - Cliente Cadastrado')
         print('[2] - Cliente Novo')
@@ -78,9 +74,11 @@ def menuPrincipal():
         else:
             print('Opcao invalida!')
 
+
 def main():
     menuPrincipal()
 
-if __name__ == '__main__': # chamada da funcao principal
+
+if __name__ == '__main__':  # chamada da funcao principal
     main()
 
