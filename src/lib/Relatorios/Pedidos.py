@@ -16,13 +16,13 @@ from src.db.Asgard import Bifrost
 
 # variavel "cursor" pode ser alterada para qualquer outro nome de sua escolha
 cursor = Bifrost.connection.cursor()
-cursor.execute("select CODIGO_CLI, NOME_CLI, DATA_PED, sum(b.CODIGO_CLI) AS TOTAL from cliente a inner join pedido b on a.CODIGO_CLI = b.CODIGO_CLI order by data_ped")
+cursor.execute("select COD_PEDIDO, DATA_PED, CODIGO_CLI,sum(TOTAL_PED) as TOTAL from pedido where DATA_PED between '20/05/2020' AND '30/05/2020'")
 user1 = cursor.fetchone()  # retrieve the first row
 print('\nImpressao de campo a campo')
-print('CODIGO_CLI:', CODIGO_CLI[0])  # Imprime o primeiro campo
-print('NOME_CLI:', NOME_CLI[1])  # Imprime o segundo campo
-print('DATA_PED:', DATA_PED[2])  # Imprime o terceiro campo
-print('TOTAL:', TOTAL[3])  # Imprime o quarto campo
+print('Codigo Cliente :', user1[0])  # Imprime o primeiro campo
+print('Data do Pedido:', user1[1])  # Imprime o segundo campo
+print('Codigo do Cliente:', user1[2])  # Imprime o terceiro campo
+print('TOTAL:', user1[3])  # Imprime o quarto campo
 (number_of_rows,)=cursor.fetchone()
 
 print('\nImpressao de toda as tuplas')
