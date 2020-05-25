@@ -77,7 +77,7 @@ def limparTelaOS():
         os.system('clear')
 
 def cabecalhoMenu():
-    limparTela()
+    limparTelaOS()
     print('  _________________')
     print(' |  MASTER-PIZZAS  | ')
     print(' |_________________|')

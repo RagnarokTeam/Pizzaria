@@ -202,7 +202,7 @@ def menu_cliente():
     print("[2] - Atualizar Cliente")
     print("[3] - Ativar Cliente")
     print("[4] - Desativar Cliente")
-    print("[5] - Menu Principal")
+    print("[5] - Voltar ao Menu Principal")
 
     o = eval(input("\nDigite a opção desejada: "))
 

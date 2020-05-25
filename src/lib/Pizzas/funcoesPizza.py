@@ -11,7 +11,9 @@
 
 from src.db.Asgard import Bifrost
 from src.lib.Fenrir import GETDATE
-
+from src.main import menuPrincipal
+from src.lib.Fenrir import limparTelaOS
+from src.lib.Fenrir import cabecalhoMenu
 
 # variavel "cursor" pode ser alterada para qualquer outro nome de sua escolha
 cursor = Bifrost.connection.cursor()
@@ -29,8 +31,11 @@ def nova_pizza(): #solicita os dados, os coloca em uma lista e aloca no banco
 
     cursor.executemany("INSERT INTO pizza(DATA_CRIACAO, NOME_PIZ, INGREDIENTES, VALOR_CUSTO) \
                     values (?, ?, ?, ?)", novaPizza)  # alocando no banco
+  
     cursor.connection.commit()
-    print('Pizza', nome, 'cadastrada com sucesso!')
+    cabecalhoMenu()
+    print('\nPizza', nome, 'cadastrada com sucesso!')
+    pausa()
 
 
 
@@ -40,18 +45,18 @@ def inativ_pizza(): #coloca a data atual na data de inativação
     cursor.execute("UPDATE pizza SET DATA_INATIVACAO = ? WHERE CODIGO_PIZ = ?", (GETDATE(), cod))
 
     cursor.connection.commit()
-
-    print("Pizza desativada com sucesso!")
-
+    cabecalhoMenu()
+    print("\nPizza desativada com sucesso!")
+    pausa()
 
 def ativar_pizza(): #insere NULL na data de inativação
     cod = (input("Digite o código da pizza que deseja reativar: "))
     cursor.execute("UPDATE pizza SET DATA_INATIVACAO = NULL WHERE CODIGO_PIZ = ?", (cod))
 
     cursor.connection.commit()
-
-    print("Pizza reativada com sucesso!")
-
+    cabecalhoMenu()
+    print("\nPizza reativada com sucesso!")
+    pausa()
 
 
 def apagar_pizza(): #funçao para apagar pizza do banco caso cadastrada errado
@@ -62,41 +67,57 @@ def apagar_pizza(): #funçao para apagar pizza do banco caso cadastrada errado
     cursor.execute("""DELETE FROM pizza WHERE CODIGO_PIZ = ?""", (cod,))
     
     cursor.connection.commit()
-     
-    print("Pizza apagada com sucesso!")
+    cabecalhoMenu()
+    print("\nPizza apagada com sucesso!")
+    pausa()
 
 #menu gerenciador de pizzas
 def menu_pizzas():
     opcao = 0
     op = 0
+    print(" Gerenciado de Pizzas \n")
     print("[1] - Criar novo sabor")
     print("[2] - Inativar pizza")
     print("[3] - Ativar pizza")
-    print('[4] - Apagar cadastro')
+    print("[4] - Apagar cadastro")
+    print("[5] - Voltar ao Menu Principal")
 
-    opcao = eval(input("Digite a opção desejada: "))
+    opcao = eval(input("\nDigite a opção desejada: "))
 
     if opcao == 1:
+        limparTelaOS()
         nova_pizza()
+        limparTelaOS()
         menu_pizzas()
     elif opcao == 2:
+        limparTelaOS()
         inativ_pizza()
+        limparTelaOS()
         menu_pizzas()
     elif opcao == 3:
+        limparTelaOS()
         ativar_pizza()
+        limparTelaOS()
         menu_pizzas()
     elif (opcao == 4):
+        limparTelaOS()
         print("Essa opção excluirá permanentemente!")
         op = eval(input("Deseja continuar \n [1] - Sim \n [2] - Não"))
 
         if op == 1:
+            limparTelaOS()
             apagar_pizza()
-
+            limparTelaOS()
+            menu_pizzas()
         else :
+            limparTelaOS()
             menu_pizzas()
     else :
+        limparTelaOS()
+        cabecalhoMenu()
         print("Opção Invalida!")
         pausa()
+        limparTelaOS()
         menu_pizzas()
 
 #fechando conexão

@@ -12,8 +12,8 @@
 import os
 
 from src.lib import Fenrir
-
-
+from src.lib.Clientes import funcoesCliente
+from src.lib.Pizzas import funcoesPizza
 def cadastroCliente():
     Fenrir.limparTelaOS()
     input('Telefone Fixo: ')
@@ -61,6 +61,8 @@ def menuPrincipal():
         print('[1] - Cliente Cadastrado')
         print('[2] - Cliente Novo')
         print('[3] - Relatorios')
+        print('[4] - Gerenciar Clientes')
+        print('[5] - Gerenciar Pizzas')
         print('[9] - Sair')
         opcao = eval(input('Digite a opção desejada: '))
         print('Opcao escolhido foi: ', opcao)
@@ -72,6 +74,14 @@ def menuPrincipal():
             cadastroCliente()
         elif opcao == 3:
             todosRelatorios()
+        elif opcao == 4:
+            Fenrir.limparTelaOS()
+            funcoesCliente.menu_cliente()
+            Fenrir.limparTelaOS()
+        elif ocao == 5:
+            Fenrir.limparTelaOS()
+            funcoesPizza.menu_pizzas()
+            Fenrir.limparTelaOS()
         else:
             print('Opcao invalida!')
 
