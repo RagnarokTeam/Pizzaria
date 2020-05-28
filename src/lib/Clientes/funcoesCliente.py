@@ -16,8 +16,36 @@ from src.main import menuPrincipal
 # variavel "cursor" pode ser alterada para qualquer outro nome de sua escolha
 cursor = Bifrost.connection.cursor()
 
+def pause():
+    prog = input("\nPressione <ENTER> para voltar.")
+
 def pausa():
     programPause = input("\nPressione <ENTER> para voltar ao menu.")
+
+def listar_clientes():
+    cursor.execute("SELECT CODIGO_CLI, NOME_CLI, TEL_FIXO, TEL_CEL, DATA_CADASTRO, DATA_INATIVO FROM cliente")
+    print("Cód  |  Nome  |  Tel.Fixo  |  Tel.Celular  | Cadastro  |  Inativação")
+    for coluna in cursor.fetchall():
+        print(coluna)
+    cursor.connection.commit()   
+    pause()
+
+def consulta_cliente(codcliente):
+    cursor.execute("SELECT CODIGO_CLI, NOME_CLI, TEL_FIXO, TEL_CEL, ENDERECO, NR_END, COMPLEMENTO, BAIRRO, CIDADE, UF, DATA_CADASTRO, DATA_INATIVO FROM cliente WHERE CODIGO_CLI = ?",(codcliente,))
+    colum = cursor.fetchone()
+    print("Codigo Cliente:",colum[0])
+    print("Nome:", colum [1])
+    print("Telefone Fixo", colum [2])
+    print("Telefone Celular:", colum[3])
+    print("Endereço:", colum[4])
+    print("Número:", colum[5])
+    print("Complemento:", colum[6])
+    print("Bairro:", colum[7])
+    print("Cidade:", colum[8])
+    print("UF:", colum[9])
+    print("Data de Cadastro:", colum[10])
+    print("Data de Inativação:", colum[11])
+    pause()
 
 def novo_cliente (): #função para cadastrar um novo cliente
     nome = (input("Nome: "))
@@ -40,60 +68,81 @@ def novo_cliente (): #função para cadastrar um novo cliente
     print('\nCliente cadastrado com sucesso!')
     pausa()
 
+
+
 def atualizar_cliente (): #função para atualizar algum dado do cliente
     opc = 0
     cod = input("Digite o código do cliente: ")#pegando o cod para passar para funções de atualização
-    print("[1] - Nome")
-    print("[2] - Telefone Fixo")
-    print("[3] - Telefone Celular")
-    print("[4] - Endereço")
-    print("[5] - Número")
-    print("[6] - Complemento")
-    print("[7] - Bairro")
-    print("[8] - Cidade")
-    print("[9] - UF")
-    print("[0] - Voltar ao gerenciador de clientes")
+    def atualizar_cliente():
 
-    opc = eval (input("\nDigite a opçao desejada: "))
-    if opc == 1:
-        limparTelaOS()
-        at_nome(cod)
-        limparTelaOS()
-    elif opc == 2:
-        limparTelaOS()
-        at_telf(cod)
-        limparTelaOS()
-    elif opc == 3:
-        limparTelaOS()
-        at_telc(cod)
-        limparTelaOS()
-    elif opc == 4:
-        limparTelaOS()
-        at_end(cod)
-        limparTelaOS()
-    elif opc == 5:
-        limparTelaOS()
-        at_num(cod)
-        limparTelaOS()
-    elif opc == 6:
-        limparTelaOS()
-        at_comp(cod)
-        limparTelaOS()
-    elif opc == 7:
-        limparTelaOS()
-        at_bairro(cod)
-        limparTelaOS()
-    elif opc == 8:
-        limparTelaOS()
-        at_cid(cod)
-        limparTelaOS()
-    elif opc == 9:
-        limparTelaOS()
-        at_uf(cod)
-        limparTelaOS()
-    elif opc == 0:
-        limparTelaOS()
-        menu_cliente()
+        print("[1] - Nome")
+        print("[2] - Telefone Fixo")
+        print("[3] - Telefone Celular")
+        print("[4] - Endereço")
+        print("[5] - Número")
+        print("[6] - Complemento")
+        print("[7] - Bairro")
+        print("[8] - Cidade")
+        print("[9] - UF")
+        print("[0] - Voltar ao gerenciador de clientes")
+
+        opc = eval (input("\nDigite a opçao desejada: "))
+        if opc == 1:
+            limparTelaOS()
+            at_nome(cod)
+            limparTelaOS()
+            atualizar_cliente()
+        elif opc == 2:
+            limparTelaOS()
+            at_telf(cod)
+            limparTelaOS()
+            atualizar_cliente()
+        elif opc == 3:
+            limparTelaOS()
+            at_telc(cod)
+            limparTelaOS()
+            atualizar_cliente()
+        elif opc == 4:
+            limparTelaOS()
+            at_end(cod)
+            limparTelaOS()
+            atualizar_cliente()
+        elif opc == 5:
+            limparTelaOS()
+            at_num(cod)
+            limparTelaOS()
+            atualizar_cliente()
+        elif opc == 6:
+            limparTelaOS()
+            at_comp(cod)
+            limparTelaOS()
+            atualizar_cliente()
+        elif opc == 7:
+            limparTelaOS()
+            at_bairro(cod)
+            limparTelaOS()
+            atualizar_cliente()
+        elif opc == 8:
+            limparTelaOS()
+            at_cid(cod)
+            limparTelaOS()
+            atualizar_cliente()
+        elif opc == 9:
+            limparTelaOS()
+            at_uf(cod)
+            limparTelaOS()
+            atualizar_cliente()
+        elif opc == 0:
+            limparTelaOS()
+            menu_cliente()
+        else:
+            limparTelaOS()
+            print("\nOpção Inválida!")
+            pausa()
+
+            atualizar_cliente()
+
+    atualizar_cliente()
 
 def at_nome(codcliente): #atualização do nome
     new = input("Digite o novo nome: ")
@@ -194,39 +243,55 @@ def desativar_cliente():
     print("Cliente desativado com sucesso!")
     pausa()
 
+
+
 def menu_cliente():
     limparTelaOS()
     o = 0
     print(" Gerenciador de Clientes\n ")
-    print("[1] - Novo Cliente")
-    print("[2] - Atualizar Cliente")
-    print("[3] - Ativar Cliente")
-    print("[4] - Desativar Cliente")
-    print("[5] - Voltar ao Menu Principal")
+    print("[1] - Listar Clientes")
+    print("[2] - Consultar um Cliente")
+    print("[3] - Novo Cliente")
+    print("[4] - Atualizar Cliente")
+    print("[5] - Ativar Cliente")
+    print("[6] - Desativar Cliente")
+    print("[7] - Menu Principal")
 
     o = eval(input("\nDigite a opção desejada: "))
 
     if o == 1:
         limparTelaOS()
-        novo_cliente()
+        listar_clientes()
         limparTelaOS()
         menu_cliente()
     elif o == 2:
         limparTelaOS()
-        atualizar_cliente()
+        cod = input("Digite o codigo do Cliente:")
+        limparTelaOS()
+        consulta_cliente(cod)
         limparTelaOS()
         menu_cliente()
     elif o == 3:
         limparTelaOS()
-        ativar_cliente()
+        novo_cliente()
         limparTelaOS()
         menu_cliente()
     elif o == 4:
         limparTelaOS()
-        desativar_cliente()
+        atualizar_cliente()
         limparTelaOS()
         menu_cliente()
     elif o == 5:
+        limparTelaOS()
+        ativar_cliente()
+        limparTelaOS()
+        menu_cliente()
+    elif o == 6:
+        limparTelaOS()
+        desativar_cliente()
+        limparTelaOS()
+        menu_cliente()
+    elif o == 7:
          limparTelaOS()
          menuPrincipal()  
     else :
@@ -235,6 +300,7 @@ def menu_cliente():
         pausa()
         limparTelaOS()
         menu_cliente()
+        
 
 menu_cliente()
 
