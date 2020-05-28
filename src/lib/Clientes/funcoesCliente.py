@@ -22,15 +22,16 @@ def pause():
 def pausa():
     programPause = input("\nPressione <ENTER> para voltar ao menu.")
 
-def listar_clientes():
-    cursor.execute("SELECT CODIGO_CLI, NOME_CLI, TEL_FIXO, TEL_CEL, DATA_CADASTRO, DATA_INATIVO FROM cliente")
-    print("Cód  |  Nome  |  Tel.Fixo  |  Tel.Celular  | Cadastro  |  Inativação")
+def listar_clientes():#lista o código e nome dos clientes
+    cursor.execute("SELECT CODIGO_CLI, NOME_CLI FROM cliente")
+    print("Cód  |  Nome  ")
     for coluna in cursor.fetchall():
         print(coluna)
+
     cursor.connection.commit()   
     pause()
 
-def consulta_cliente(codcliente):
+def consulta_cliente(codcliente): #consulta determinado cliente pelo seu código
     cursor.execute("SELECT CODIGO_CLI, NOME_CLI, TEL_FIXO, TEL_CEL, ENDERECO, NR_END, COMPLEMENTO, BAIRRO, CIDADE, UF, DATA_CADASTRO, DATA_INATIVO FROM cliente WHERE CODIGO_CLI = ?",(codcliente,))
     colum = cursor.fetchone()
     print("Codigo Cliente:",colum[0])
@@ -75,7 +76,7 @@ def atualizar_cliente (): #função para atualizar algum dado do cliente
     cod = input("Digite o código do cliente: ")#pegando o cod para passar para funções de atualização
     def atualizar_cliente():
 
-        print("[1] - Nome")
+        print("[1] - Nome")#imprimindo opções de atualização
         print("[2] - Telefone Fixo")
         print("[3] - Telefone Celular")
         print("[4] - Endereço")
@@ -86,7 +87,7 @@ def atualizar_cliente (): #função para atualizar algum dado do cliente
         print("[9] - UF")
         print("[0] - Voltar ao gerenciador de clientes")
 
-        opc = eval (input("\nDigite a opçao desejada: "))
+        opc = eval (input("\nDigite a opçao desejada: "))#leitra da opção
         if opc == 1:
             limparTelaOS()
             at_nome(cod)
@@ -153,7 +154,7 @@ def at_nome(codcliente): #atualização do nome
     print("\nNome atualizado com sucesso!")
     pausa()
 
-def at_telf(codcliente):
+def at_telf(codcliente): #atualização do telefone fixo
     new = input("Digite o novo Telefone Fixo: ")
     cursor.execute("UPDATE cliente SET TEL_FIXO = ? WHERE CODIGO_CLI = ?", (new, codcliente))
 
@@ -162,7 +163,7 @@ def at_telf(codcliente):
     print("\nTelefone Fixo atualizado com sucesso!")
     pausa()
 
-def at_telc(codcliente):
+def at_telc(codcliente):#atualização do telefone celular
     new = input("Digite o novo Telefone Celular: ")
     cursor.execute("UPDATE cliente SET TEL_CEL = ? WHERE CODIGO_CLI = ?", (new, codcliente))
 
@@ -171,7 +172,7 @@ def at_telc(codcliente):
     print("\nTelefone Celular atualizado com sucesso!")
     pausa()
 
-def at_end(codcliente):
+def at_end(codcliente):#atualização do endereço
     new = input("Digite o novo Endereço: ")
     cursor.execute("UPDATE cliente SET ENDERECO = ? WHERE CODIGO_CLI = ?", (new, codcliente))
 
@@ -180,7 +181,7 @@ def at_end(codcliente):
     print("\nEndereço atualizado com sucesso!")
     pausa()
 
-def at_num(codcliente):
+def at_num(codcliente): #atualização do número do endereço
     new = input("Digite o novo Número: ")
     cursor.execute("UPDATE cliente SET NR_END = ? WHERE CODIGO_CLI = ?", (new, codcliente))
 
@@ -189,7 +190,7 @@ def at_num(codcliente):
     print("\nNúmero atualizado com sucesso!")
     pausa()
 
-def at_comp(codcliente):
+def at_comp(codcliente): #atualização do complemento
     new = input("Digite o novo Comlemento: ")
     cursor.execute("UPDATE cliente SET COMPLEMENTO = ? WHERE CODIGO_CLI = ?", (new, codcliente))
 
@@ -198,7 +199,7 @@ def at_comp(codcliente):
     print("\nComplemento atualizado com sucesso!")
     pausa()
 
-def at_bairro(codcliente):
+def at_bairro(codcliente): #atualização do bairro
     new = input("Digite o novo Bairro: ")
     cursor.execute("UPDATE cliente SET BAIRRO = ? WHERE CODIGO_CLI = ?", (new, codcliente))
 
@@ -207,7 +208,7 @@ def at_bairro(codcliente):
     print("\nBairro atualizado com sucesso!")
     pausa()
 
-def at_cid(codcliente):
+def at_cid(codcliente): #atualização da cidade
     new = input("Digite a nova Cidade: ")
     cursor.execute("UPDATE cliente SET CIDADE = ? WHERE CODIGO_CLI = ?", (new, codcliente))
 
@@ -216,7 +217,7 @@ def at_cid(codcliente):
     print("\nCidade atualizada com sucesso!")
     pausa()
 
-def at_uf(codcliente):
+def at_uf(codcliente): #atualização do estado (UF)
     new = input("Digite o novo Estado (UF): ")
     cursor.execute("UPDATE cliente SET UF = ? WHERE CODIGO_CLI = ?", (new, codcliente))
 
@@ -225,7 +226,7 @@ def at_uf(codcliente):
     print("\nEstado atualizado com sucesso!")
     pausa()
 
-def ativar_cliente():
+def ativar_cliente(): #ativação de cliente
     codi = (input("Digite o código do cliente que deseja reativar: "))
     cursor.execute("UPDATE cliente SET DATA_INATIVO = NULL WHERE CODIGO_CLI = ?", (codi))
 
@@ -234,7 +235,7 @@ def ativar_cliente():
     print("Cliente reativado com sucesso!")
     pausa()
 
-def desativar_cliente():
+def desativar_cliente(): #desativando cliente
     codi = (input("Digite o código do cliente que deseja desativar: "))
     cursor.execute("UPDATE cliente SET DATA_INATIVO = ? WHERE CODIGO_CLI = ?", (GETDATE(), codi))
 
@@ -245,7 +246,7 @@ def desativar_cliente():
 
 
 
-def menu_cliente():
+def menu_cliente(): #menu que gerencia as funções com clientes
     limparTelaOS()
     o = 0
     print(" Gerenciador de Clientes\n ")
@@ -257,7 +258,7 @@ def menu_cliente():
     print("[6] - Desativar Cliente")
     print("[7] - Menu Principal")
 
-    o = eval(input("\nDigite a opção desejada: "))
+    o = eval(input("\nDigite a opção desejada: "))#lendo a opção desejada
 
     if o == 1:
         limparTelaOS()
