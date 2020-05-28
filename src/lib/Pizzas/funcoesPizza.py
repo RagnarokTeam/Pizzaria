@@ -24,16 +24,17 @@ def pausa():
 
 def nova_pizza(): #solicita os dados, os coloca em uma lista e aloca no banco
     nome = (input("Nome da pizza:"))
-    ing = (input("Ingredientes: "))
+    tipo = (input("Tipo:"))
+    ing = (input("Ingredientes:"))
     valor = (input("Valor de Custo:"))
 
-    novaPizza = [(GETDATE(), nome, ing, valor)]  #lista com os dados obtidos
+    novaPizza = [(GETDATE(), nome, tipo, ing, valor)]  #lista com os dados obtidos
 
-    cursor.executemany("INSERT INTO pizza(DATA_CRIACAO, NOME_PIZ, INGREDIENTES, VALOR_CUSTO) \
-                    values (?, ?, ?, ?)", novaPizza)  # alocando no banco
+    cursor.executemany("INSERT INTO pizza(DATA_CRIACAO, NOME_PIZ,TIPO_PIZ, INGREDIENTES, VALOR_CUSTO) \
+                    values (?, ?, ?, ?, ?)", novaPizza)  # alocando no banco
   
     cursor.connection.commit()
-    cabecalhoMenu()
+
     print('\nPizza', nome, 'cadastrada com sucesso!')
     pausa()
 
@@ -45,7 +46,7 @@ def inativ_pizza(): #coloca a data atual na data de inativação
     cursor.execute("UPDATE pizza SET DATA_INATIVACAO = ? WHERE CODIGO_PIZ = ?", (GETDATE(), cod))
 
     cursor.connection.commit()
-    cabecalhoMenu()
+
     print("\nPizza desativada com sucesso!")
     pausa()
 
@@ -54,7 +55,10 @@ def ativar_pizza(): #insere NULL na data de inativação
     cursor.execute("UPDATE pizza SET DATA_INATIVACAO = NULL WHERE CODIGO_PIZ = ?", (cod))
 
     cursor.connection.commit()
+
+    
     cabecalhoMenu()
+
     print("\nPizza reativada com sucesso!")
     pausa()
 
@@ -67,28 +71,35 @@ def apagar_pizza(): #funçao para apagar pizza do banco caso cadastrada errado
     cursor.execute("""DELETE FROM pizza WHERE CODIGO_PIZ = ?""", (cod,))
     
     cursor.connection.commit()
-    cabecalhoMenu()
-    print("\nPizza apagada com sucesso!")
+     
+    print("Pizza apagada com sucesso!")
     pausa()
+
+def listar_pizzas():#lista o código, tipo e nome das pizzas
+    cursor.execute("SELECT CODIGO_PIZ, TIPO_PIZ, NOME_PIZ FROM pizza")
+    print("Cód| Tipo  | Nome  ")
+    for coluna in cursor.fetchall():
+        print(coluna)
 
 #menu gerenciador de pizzas
 def menu_pizzas():
+    limparTelaOS()
     opcao = 0
     op = 0
     print(" Gerenciado de Pizzas \n")
     print("[1] - Criar novo sabor")
     print("[2] - Inativar pizza")
     print("[3] - Ativar pizza")
-    print("[4] - Apagar cadastro")
-    print("[5] - Voltar ao Menu Principal")
+    print("[4] - Listar pizzas")
+    print("[5] - Menu Principal")
 
-    opcao = eval(input("\nDigite a opção desejada: "))
+    opcao = eval(input("\nDigite a opção desejada: "))#lendo opção desejada
 
     if opcao == 1:
-        limparTelaOS()
-        nova_pizza()
-        limparTelaOS()
-        menu_pizzas()
+        limparTelaOS()#limpando a tela
+        nova_pizza()#função referente a opção
+        limparTelaOS()#limpando a tela
+        menu_pizzas()#voltando ao menu principal
     elif opcao == 2:
         limparTelaOS()
         inativ_pizza()
@@ -99,26 +110,21 @@ def menu_pizzas():
         ativar_pizza()
         limparTelaOS()
         menu_pizzas()
-    elif (opcao == 4):
+    elif opcao == 4:
         limparTelaOS()
-        print("Essa opção excluirá permanentemente!")
-        op = eval(input("Deseja continuar \n [1] - Sim \n [2] - Não"))
-
-        if op == 1:
-            limparTelaOS()
-            apagar_pizza()
-            limparTelaOS()
-            menu_pizzas()
-        else :
-            limparTelaOS()
-            menu_pizzas()
+        listar_pizzas()
+        menu_pizzas()
+    elif opcao == 5:
+        limparTelaOS()
+        menuPrincipal()
     else :
         limparTelaOS()
-        cabecalhoMenu()
         print("Opção Invalida!")
         pausa()
         limparTelaOS()
         menu_pizzas()
+
+menu_pizzas()
 
 #fechando conexão
 Bifrost.connection.close()
