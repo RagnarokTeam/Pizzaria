@@ -261,10 +261,10 @@ def menu_cliente(): #menu que gerencia as funções com clientes
     o = eval(input("\nDigite a opção desejada: "))#lendo a opção desejada
 
     if o == 1:
-        limparTelaOS()
-        listar_clientes()
-        limparTelaOS()
-        menu_cliente()
+        limparTelaOS()#limpando a tela
+        listar_clientes()#função da opção desejada
+        limparTelaOS()#limpando a tela
+        menu_cliente()#voltando ao menu de cliente
     elif o == 2:
         limparTelaOS()
         cod = input("Digite o codigo do Cliente:")
