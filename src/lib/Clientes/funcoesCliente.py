@@ -9,9 +9,8 @@
 # Referencias:
 # ""
 from src.db.Asgard import Bifrost
-from src.lib.Fenrir import GETDATE
-from src.lib.Fenrir import limparTelaOS
-from src.main import menuPrincipal
+#from src.lib import Fenrir
+
 
 # variavel "cursor" pode ser alterada para qualquer outro nome de sua escolha
 cursor = Bifrost.connection.cursor()
@@ -23,7 +22,7 @@ def pausa():
     programPause = input("\nPressione <ENTER> para voltar ao menu.")
 
 def listar_clientes():#lista o código e nome dos clientes
-    cursor.execute("SELECT CODIGO_CLI, NOME_CLI FROM cliente")
+    cursor.execute("SELECT CODIGO_CLI, NOME_CLI FROM cliente WHERE DATA_INATIVO IS NULL")
     print("Cód  |  Nome  ")
     for coluna in cursor.fetchall():
         print(coluna)
@@ -59,7 +58,7 @@ def novo_cliente (): #função para cadastrar um novo cliente
     cid = (input("Cidade: "))
     uf = (input("UF: "))
 
-    novoCliente = [(telf, telc, nome, end, num, comp, bai, cid, uf, GETDATE())] #lista com os dados obtidos
+    novoCliente = [(telf, telc, nome, end, num, comp, bai, cid, uf, lETDATE())] #lista com os dados obtidos
        
     cursor.executemany("INSERT INTO cliente(TEL_FIXO, TEL_CEL, NOME_CLI, ENDERECO, NR_END, COMPLEMENTO, \
                         BAIRRO, CIDADE, UF, DATA_CADASTRO) \
@@ -237,7 +236,7 @@ def ativar_cliente(): #ativação de cliente
 
 def desativar_cliente(): #desativando cliente
     codi = (input("Digite o código do cliente que deseja desativar: "))
-    cursor.execute("UPDATE cliente SET DATA_INATIVO = ? WHERE CODIGO_CLI = ?", (GETDATE(), codi))
+    cursor.execute("UPDATE cliente SET DATA_INATIVO = ? WHERE CODIGO_CLI = ?", (lETDATE(), codi))
 
     cursor.connection.commit()
 
