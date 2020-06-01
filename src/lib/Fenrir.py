@@ -256,14 +256,42 @@ def todosRelatorios():
 
 def cancelar_pedido ():
     ped = input("Digite o código do pedido que deseja cancelar")
-    
-    cursor.execute("DELETE FROM pedido WHERE COD_PEDIDO = ?", (ped))
-    
-    cursor.connection.commit()
-     
-    print("Pedido cancelado com sucesso!")
-    pausa()
+    cursor.execute(
+        "select distinct  COD_PED, NOME_CLI, data_ped, hora_ped,total_ped from cliente a inner join pedido b on a.CODIGO_CLI = b.CODIGO_CLI WHERE B.COD_PED = ? group by cod_ped, nome_cli order by data_ped",(ped))
 
+    row = cursor.fetchone()
+    if row is not None:
+        print('\n------------------------------------------------------------\n\n')
+        print('ID PEDIDO: {0}\n NOME CLIENTE: {1}\n DATA PEDIDO: {2} \n HORA DO PEDIDO: {3}\n TOTAL DO PEDIDO: {4}'.format(row[0],row[1],row[2],row[3],row[4]))
+        print('\n')
+        op = 0
+        op = eval(input('\nTem certeza que deseja cancelar o pedido acima?\n [1] - Sim\n [2] - Não\n'))
+        if op == 1:
+            limparTelaOS()
+
+            cursor.execute("DELETE FROM pedido WHERE COD_PED = ?", (ped))
+
+            cursor.connection.commit()
+            cursor.execute("DELETE FROM ITENS_pedido WHERE COD_PED = ?", (ped))
+
+            cursor.connection.commit()
+
+            print("Pedido cancelado com sucesso!")
+            cont()
+        elif op == 2:
+            print('Cancelando operação... \n Retornando ao menu principal')
+            cont()
+            menuPrincipal()
+    else:
+        op = 0
+        op = eval(input('Pedido não encontrado\n Deseja realizar a operação novamente?\n [1] - Sim\n [2] - Não\n'))
+        if op == 1:
+            limparTelaOS()
+            cancelar_pedido()
+        elif op == 2:
+            print('Cancelando operação... \n Retornando ao menu principal')
+            cont()
+            menuPrincipal()
 def menuPrincipal():
     opcao = 0
     while opcao != 9:
@@ -275,6 +303,7 @@ def menuPrincipal():
         print('[4] - Relatorios')
         print('[5] - Gerenciar Clientes')
         print('[6] - Gerenciar Pizzas')
+        print('[7] - Gerar Banco de Dados Padrão')
         print('[9] - Sair')
         opcao = eval(input('Digite a opção desejada: '))
         print('Opcao escolhido foi: ', opcao)
@@ -304,6 +333,11 @@ def menuPrincipal():
         elif opcao == 6:
             limparTelaOS()
             menu_pizzas()
+            limparTelaOS()
+        elif opcao == 7:
+            limparTelaOS()
+            gerarDataBasePadrão()
+            menuPrincipal()
             limparTelaOS()
         else:
             print('Opcao invalida!\n')
@@ -916,6 +950,11 @@ def ultimoIdPedido():
     return  id[0]
 
 def gerarDataBasePadrão():
+    itens_pedido()
+    tab_pedido()
+    tab_pizza()
+    tab_cliente()
+    print('\nTabelas criadas com sucesso!')
     lista_clientes = [('1', '1', 'Paula', 'Rua Anfibólios', '562', 'NULL', 'Bonfim', 'Belo Horizonte', 'MG'),
                       ('2', '2', 'Camila', 'Parque Anhangabaú', '82', 'NULL', 'Centro', 'São Paulo', 'SP'),
                       ('3', '3', 'Jefferson', 'Rua Condado', '585', 'Ap 76 BL 5', 'Cavalhada', 'Porto Alegre', 'RS'),
@@ -959,3 +998,40 @@ def gerarDataBasePadrão():
 
     cursor.connection.commit()
     print('\nPizzas inseridos com sucesso!')
+    cont()
+
+def tab_cliente():
+    cursor.execute('CREATE TABLE IF NOT EXISTS cliente \
+                   (CODIGO_CLI  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, TEL_FIXO string(15), \
+                   TEL_CEL string(15), NOME_CLI string(40), ENDERECO string(30), NR_END string(10), \
+                    COMPLEMENTO string(25), BAIRRO string(20), CIDADE string(20), UF string(02),DATA_CADASTRO date, DATA_INATIVO date)'
+                   )
+
+def tab_pizza():
+    cursor.execute('CREATE TABLE IF NOT EXISTS pizza \
+                    (CODIGO_PIZ    INTEGER  NOT NULL    PRIMARY KEY AUTOINCREMENT,\
+                     TIPO_PIZ string(8), DATA_CRIACAO date,\
+                     DATA_INATIVACAO date, NOME_PIZ string(100), '
+                   'INGREDIENTES text, VALOR_CUSTO numeric(10, 2))'
+                   )
+
+def tab_pedido():
+    cursor.execute('CREATE TABLE IF NOT EXISTS PEDIDO (COD_PED	INTEGER NOT NULL  PRIMARY KEY AUTOINCREMENT,DATA_PED		DATE,\
+	HORA_PED		TIME,\
+	CODIGO_CLI		INTEGER,\
+	TOTAL_PED		NUMERIC(10,2),\
+	CONSTRAINT FK_PEDIDO_CODIGOCLI FOREIGN KEY(CODIGO_CLI) REFERENCES CLIENTE(CODIGO_CLI)\
+    );')
+
+
+def itens_pedido():
+    cursor.execute('CREATE TABLE IF NOT EXISTS ITENS_PEDIDO (\
+	COD_PED			INTEGER NOT NULL,\
+	ITEM			INTEGER NOT NULL,\
+	CODIGO_PIZ		INTEGER,\
+	TAMANHO			STRING (10),\
+	CONSTRAINT PK_ITENSPEDIDO PRIMARY KEY(COD_PED, ITEM),\
+	CONSTRAINT FK_ITENSPEDIDO_CODIGOPIZ FOREIGN KEY(CODIGO_PIZ) REFERENCES PIZZA(CODIGO_PIZ));')
+
+
+
