@@ -28,6 +28,12 @@ def GETTIMEADD():
     return data
 
 
+def limparTelaOS():
+    if os.system == 'nt':
+        os.system('cls')
+    else:
+        os.system('cls')
+
 def selectValorPadraoPizza(Tamanho,nomePizza):
     # inicialmente vou usar apenas por nome mas o correto é se usar o cod
     cursor = Bifrost.connection.cursor()
@@ -603,6 +609,101 @@ def ativar_pizza():  # insere NULL na data de inativação
     print("\nPizza reativada com sucesso!")
     pausa()
 
+def at_tipo(codpiz):
+    new = 0
+    print("Qual será o novo tipo da pizza?")
+    new = eval(input("[1] - Salgada\n[2] - Doce\n"))
+    novo = " "
+    if new == 1:
+        novo = "Salgada"
+    elif new == 2:
+        novo = "Doce"
+    else:
+        print("Opção inválida !")
+        pausa()
+        at_tipo
+
+    cursor.execute("UPDATE pizza SET TIPO_PIZ = ? WHERE CODIGO_PIZ = ?", (novo, codpiz))
+
+    cursor.connection.commit()
+
+    print("\nTipo atualizado com sucesso!")
+    pausa()
+
+def at_nome(codpiz):
+    new = input("Digite o novo nome:")
+    
+    cursor.execute("UPDATE pizza SET NOME_PIZ = ? WHERE CODIGO_PIZ = ?", (new, codpiz))
+
+    cursor.connection.commit()
+
+    print("\nNome atualizado com sucesso!")
+    pausa()
+
+def at_ing(codpiz):
+    new = input("Digite os novos ingredientes:")
+
+    cursor.execute("UPDATE pizza SET INGREDIENTES = ? WHERE CODIGO_PIZ = ?", (new, codpiz))
+
+    cursor.connection.commit()
+
+    print("\nIngredientes atualizados com sucesso!")
+    pausa()
+
+def at_valor(codpiz):  
+    new = input("Digite o novo valor de custo:")
+
+    cursor.execute("UPDATE pizza SET VALOR_CUSTO = ? WHERE CODIGO_PIZ = ?", (new, codpiz))
+
+    cursor.connection.commit()
+
+    print("\nIngredientes atualizados com sucesso!")
+    pausa()
+    
+
+def atualizar_pizza():
+    opc = 0
+    limparTelaOS()
+    cod = input("Digite o código da pizza: ")  # pegando o cod para passar para funções de atualização
+    
+    def atualizar_piz():
+        limparTelaOS()
+        print("[1] - Tipo de Pizza")  # imprimindo opções de atualização
+        print("[2] - Nome")
+        print("[3] - Ingredientes")
+        print("[4] - Valor de Custo")
+        print("[5] - Trocar pizza")
+        print("[6] - Voltar ao gerenciador de pizzas")
+
+        opc = eval(input("\nDigite a opçao desejada: "))
+
+        if opc == 1:
+            limparTelaOS()
+            at_tipo(cod)
+            limparTelaOS()
+            atualizar_piz()
+        elif opc == 2:
+            limparTelaOS()
+            at_nome(cod)
+            limparTelaOS()
+            atualizar_piz()
+        elif opc == 3:
+            limparTelaOS()
+            at_ing(cod)
+            limparTelaOS()
+            atualizar_piz()
+        elif opc == 4:
+            limparTelaOS()
+            at_valor(cod)
+            limparTelaOS()
+            atualizar_piz()
+        elif opc == 5:
+            limparTelaOS()
+            atualizar_pizza()
+        elif opc == 6:
+            limparTelaOS()
+            menu_pizzas()
+    atualizar_piz()
 
 def apagar_pizza():  # funçao para apagar pizza do banco caso cadastrada errado
 
@@ -634,8 +735,9 @@ def menu_pizzas():
     print("[1] - Criar novo sabor")
     print("[2] - Inativar pizza")
     print("[3] - Ativar pizza")
-    print("[4] - Listar pizzas")
-    print("[5] - Menu Principal")
+    print("[4] - Atualizar Pizza")
+    print("[5] - Listar pizzas")
+    print("[6] - Menu Principal")
 
     opcao = eval(input("\nDigite a opção desejada: "))  # lendo opção desejada
 
@@ -656,9 +758,13 @@ def menu_pizzas():
         menu_pizzas()
     elif opcao == 4:
         limparTelaOS()
+        atualizar_pizza()
+        limparTelaOS()
+    elif opcao == 5:
+        limparTelaOS()
         listar_pizzas()
         menu_pizzas()
-    elif opcao == 5:
+    elif opcao == 6:
         limparTelaOS()
         menuPrincipal()
     else:
@@ -667,6 +773,7 @@ def menu_pizzas():
         pausa()
         limparTelaOS()
         menu_pizzas()
+
 def geraPedido():
     tel = input('Digite o numero de telefone do cliente: ')
     cursor.execute("SELECT DISTINCT * FROM CLIENTE WHERE TEL_FIXO = ? OR TEL_CEL = ?",(tel,tel,))
