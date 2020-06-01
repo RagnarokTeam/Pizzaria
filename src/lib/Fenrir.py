@@ -705,7 +705,7 @@ def atualizar_pizza():
             menu_pizzas()
     atualizar_piz()
 
-def apagar_pizza():  # funçao para apagar pizza do banco caso cadastrada errado
+def apagar_pizza():  # funçao para apagar pizza do banco caso cadastrada errada
 
     cod = (input("Digite o código da pizza que deseja apagar: "))
 
