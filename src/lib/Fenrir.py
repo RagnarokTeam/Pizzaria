@@ -14,6 +14,14 @@ from src.db.Asgard import Bifrost
 #from src.lib.Pizzas import funcoesPizza
 import os
 
+def cont ():
+    prog = input("\nPressione <ENTER> para continuar.")
+def pause():
+    prog = input("\nPressione <ENTER> para voltar.")
+
+def pausa():
+    programPause = input("\nPressione <ENTER> para voltar ao menu.")
+
 def GETDATE():
     data = datetime.now().strftime("%d/%m/%Y")
 
@@ -228,6 +236,15 @@ def todosRelatorios():
         else:
             menuPrincipal()
 
+def cancelar_pedido ():
+    ped = input("Digite o código do pedido que deseja cancelar")
+    
+    cursor.execute("DELETE FROM pedido WHERE COD_PEDIDO = ?", (ped))
+    
+    cursor.connection.commit()
+     
+    print("Pedido cancelado com sucesso!")
+    pausa()
 
 def menuPrincipal():
     opcao = 0
@@ -235,30 +252,45 @@ def menuPrincipal():
         cabecalhoMenu()
         print('MENU PRINCIPAL')
         print('[1] - Iniciar Pedido')
-        print('[2] - Cliente Novo')
-        print('[3] - Relatorios')
-        print('[4] - Gerenciar Clientes')
-        print('[5] - Gerenciar Pizzas')
+        print('[2] - Cancelar Pedido')
+        print('[3] - Cliente Novo')
+        print('[4] - Relatorios')
+        print('[5] - Gerenciar Clientes')
+        print('[6] - Gerenciar Pizzas')
         print('[9] - Sair')
         opcao = eval(input('Digite a opção desejada: '))
         print('Opcao escolhido foi: ', opcao)
 
         if opcao == 1:
+            limparTelaOS()
             geraPedido()
+            limparTelaOS()
+            menuPrincipal()
         elif opcao == 2:
-            cadastroCliente()
+            limparTelaOS()
+            cancelar_pedido()
+            limparTelaOS()
+            menuPrincipal()
         elif opcao == 3:
-            todosRelatorios()
+            limparTelaOS()
+            novo_cliente()
+            limparTelaOS()
         elif opcao == 4:
+            limparTelaOS()
+            todosRelatorios()
+            limparTelaOS()
+        elif opcao == 5:
             limparTelaOS()
             menu_cliente()
             limparTelaOS()
-        elif opcao == 5:
+        elif opcao == 6:
             limparTelaOS()
             menu_pizzas()
             limparTelaOS()
         else:
-            print('Opcao invalida!')
+            print('Opcao invalida!\n')
+            pausa()
+            limparTelaOS()
 
 # variavel "cursor" pode ser alterada para qualquer outro nome de sua escolha
 cursor = Bifrost.connection.cursor()
@@ -723,7 +755,7 @@ def listar_pizzas():  # lista o código, tipo e nome das pizzas
     print("Cód| Tipo  | Nome  ")
     for row in cursor.fetchall():
         print('{0}, {1}, {2}'.format(row[0], row[1], row[2]))
-    pause()
+    cont()
 
 
 # menu gerenciador de pizzas
@@ -781,18 +813,23 @@ def geraPedido():
     if dados is not None:
         print('Cliente: ',dados[3])
         print('Rua:', dados[4],'-',dados[5])
-        op = input('Os dados estão certos? deseja continuar? s|n')
-
-        if op == 's':
+        op = eval (input('Os dados estão certos? Deseja continuar?\n [1] - Sim\n [2] - Não\n'))
+        if op == 1:
             limparTelaOS()
+            print("Lista das Pizzas")
             listar_pizzas()
-            tamanho = input('qual o tamanho? (gg,g,m)')
-            codPizza = int(input('\n\n\nQual o codigo da pizza solicitada? '))
+            limparTelaOS()
+            codPizza = int(input('Qual o codigo da pizza solicitada?\n '))
+            tamanho = input('Qual o tamanho desejado? (gg, g, m)\n')
+            limparTelaOS()
             pizza = selectPizza(codPizza)
-            opMet = input('Deseja um segundo sabor? s|n')
-            if opMet == 's':
+            opMet = eval (input('Deseja um segundo sabor?\n [1] - Sim\n [2] - Não\n'))
+            if opMet == 1:
+                limparTelaOS()
+                print("Lista das Pizzas")
                 listar_pizzas()
-                codPizza2 = int(input('\n\n\nQual o codigo da pizza solicitada? '))
+                limparTelaOS()
+                codPizza2 = int(input('Qual o codigo da pizza solicitada?\n '))
                 pizza2 = selectPizza(codPizza2)
                 valorPedido = CalculaValorFinalPizza(tamanho,pizza,1,pizza2)
                 ultimoid = ultimoIdPedido()
@@ -808,7 +845,7 @@ def geraPedido():
                 print('Seu pedido está previsto para ser feito até às ',GETTIMEADD())
 
                 pause()
-            elif opMet == 'n':
+            elif opMet == 2:
                 valorPedido = CalculaValorFinalPizza(tamanho, pizza)
                 ultimoid = ultimoIdPedido()
                 cursor.execute("insert into pedido values(?,?,?,?,?)",
@@ -824,16 +861,30 @@ def geraPedido():
             limparTelaOS()
             geraPedido()
     else:
-        print('Não foi encontrado cliente com esse telefone!')
-        print('Redirecionando para cadastro')
-        novo_cliente()
+        def erro():
+            c = 0
+            limparTelaOS()
+            print('Não foi encontrado cliente com esse telefone!')
+            c = eval(input("[1] - Tentar novamente\n[2] - Novo cadastro\n"))
+            if c == 1:
+                geraPedido()
+            elif c == 2:
+                print('Redirecionando para cadastro')
+                cont()
+                limparTelaOS()
+                novo_cliente()
+            else:
+                print("Opção invalida!")
+                pause()
+                erro()
+        erro()
 
 def selectPizza(id):
     cursor.execute("SELECT DISTINCT NOME_PIZ FROM PIZZA WHERE CODIGO_PIZ = ?", (id,))
     PIZZA = cursor.fetchone()
     print('Pizza Selecionada: ',PIZZA[0])
-    conf=input('O sabor da pizza está correto? s|n')
-    if conf == 's':
+    conf=input('O sabor da pizza está correto?\n [1] - Sim\n [2] - Não\n')
+    if conf == 1:
         return PIZZA[0]
     else:
         listar_pizzas()
