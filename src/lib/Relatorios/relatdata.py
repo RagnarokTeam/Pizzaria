@@ -1,7 +1,8 @@
+import src.db.Asgard from Bifrost
 def relatorioPorData():
-    datainicial = '23-05-2020' #input("Digite a data inicial")
-    datafinal = '27-12-2020' #input("Digite a data final") 
-    cursor.execute("select COD_PED, DATA_PED, CODIGO_CLI, TOTAL_PED from PEDIDO WHERE DATA_PED BETWEEN "+ datainicial + " AND "+ datafinal)
+    datainicial = '23/05/2020' #input("Digite a data inicial")
+    datafinal = '27/12/2020' #input("Digite a data final")
+    cursor.execute("select COD_PED, DATA_PED, CODIGO_CLI, TOTAL_PED from PEDIDO WHERE DATA_PED BETWEEN ? AND ?",(datainicial,datafinal))
  
     print('\nRELATÓRIO DE PEDIDOS ENTRE', datainicial, 'E', datafinal)
     all_rows = cursor.fetchall()

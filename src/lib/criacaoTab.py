@@ -50,10 +50,13 @@ cursor.execute('DROP TABLE IF EXISTS employee')
 
 
 def tab_pedido():
-    cursor.execute('CREATE TABLE IF NOT EXISTS pedido \
-                    (COD_PEDIDO     INTEGER NOT NULL    PRIMARY KEY AUTOINCREMENT , DATA_PED date,\
-                     HORA_PED time, CODIGO_CLI integer, TOTAL_PED numeric(10, 2))'
-                   )
+    cursor.execute('CREATE TABLE IF NOT EXISTS PEDIDO (\
+	COD_PED			INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\
+	DATA_PED		DATE,\
+	HORA_PED		TIME,\
+	CODIGO_CLI		INTEGER,\
+	TOTAL_PED		NUMERIC(10,2),\
+	CONSTRAINT FK_PEDIDO_CODIGOCLI FOREIGN KEY(CODIGO_CLI) REFERENCES CLIENTE(CODIGO_CLI))')
 
 
 tab_pedido()
@@ -63,9 +66,14 @@ cursor.execute('DROP TABLE IF EXISTS employee')
 
 
 def itens_pedido():
-    cursor.execute('CREATE TABLE IF NOT EXISTS itens_pedido \
-                    (COD_PED    INTEGER     NOT NULL, ITEM integeR NOT NULL, CODIGO_PIZ integer, TAMANHO string(10))'
-                   )
+    cursor.execute('CREATE TABLE IF NOT EXISTS ITENS_PEDIDO (\
+	COD_PED			INTEGER NOT NULL,\
+	ITEM			INTEGER NOT NULL,\
+	CODIGO_PIZ		INTEGER,\
+	TAMANHO			STRING (10),\
+	CONSTRAINT PK_ITENSPEDIDO PRIMARY KEY(COD_PED, ITEM),\
+	CONSTRAINT FK_ITENSPEDIDO_CODIGOPIZ FOREIGN KEY(CODIGO_PIZ) REFERENCES PIZZA(CODIGO_PIZ)\
+)')
 
 
 itens_pedido()

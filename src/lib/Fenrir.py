@@ -914,3 +914,48 @@ def ultimoIdPedido():
     cursor.execute("SELECT DISTINCT  MAX(COD_PED) + 1 FROM PEDIDO ")
     id = cursor.fetchone()
     return  id[0]
+
+def gerarDataBasePadrão():
+    lista_clientes = [('1', '1', 'Paula', 'Rua Anfibólios', '562', 'NULL', 'Bonfim', 'Belo Horizonte', 'MG'),
+                      ('2', '2', 'Camila', 'Parque Anhangabaú', '82', 'NULL', 'Centro', 'São Paulo', 'SP'),
+                      ('3', '3', 'Jefferson', 'Rua Condado', '585', 'Ap 76 BL 5', 'Cavalhada', 'Porto Alegre', 'RS'),
+                      ('4', '4', 'Jonathan', 'Rua Álvaro Anes', '90', 'NULL', 'Pinheiros', 'São Paulo', 'SP')]
+
+    cursor.executemany("INSERT INTO cliente( TEL_FIXO, TEL_CEL, NOME_CLI, ENDERECO, NR_END,COMPLEMENTO,BAIRRO,CIDADE,UF) \
+                        values (?,?,?,?,?,?,?,?,?)", lista_clientes)
+
+    cursor.connection.commit()
+    print('\nClientes inseridos com sucesso!')
+    lista_pizza = [('Salgada', GETDATE(), 'ALHO E OLEO', 'Alho frito picado, parmesão ralado e azeitonas', 22.90),
+                   ('Salgada', GETDATE(), 'ALLICI',
+                    'Alicci importado, rodelas de tomate, parmesão e azeitonas', 28.90),
+                   ('Salgada', GETDATE(), 'ATUM', 'Atum, cebola e azeitona', 22.90),
+                   ('Salgada', GETDATE(), 'BACON',
+                    'Bacon coberto com muzzarela e azeitonas', 26.90),
+                   ('Salgada', GETDATE(), 'BERINGELA',
+                    'Beringela, cobertura com muzzarela, manjericão e parmesão', 23.90),
+                   ('Salgada', GETDATE(), 'CAIPIRA',
+                    'Frango desfiado, coberto com catupiry e milho verde e azeitonas', 26.90),
+                   ('Salgada', GETDATE(), 'CALABRESA',
+                    'Linguiça cababresa, cebola e azeitonas', 19.90),
+                   ('Salgada', GETDATE(), 'CINCO QUEIJOS',
+                    'Muzzarela, parmesão, catupiry, gorgonzola e provolone', 29.90),
+                   ('Salgada', GETDATE(), 'ESCAROLA',
+                    'Escarola refogada, muzzarela, e azeitonas', 24.90),
+                   ('Salgada', GETDATE(), 'EXECUTIVA',
+                    'Milho Verde, catupiry e azeitonas', 22.90),
+                   ('Salgada', GETDATE(), 'PERUANA',
+                    'Atum, cebola, muzarela e azeitonas', 26.90),
+                   ('Salgada', GETDATE(), 'PALMITO',
+                    'Palmito com muzarela e azeitonas', 26.90),
+                   ('Doce', GETDATE(), 'BANANA',
+                    'Banana fatiada com, cobertura com leite condensado e canela em pó', 21.90),
+                   ('Doce', GETDATE(), 'BRIGADEIRO',
+                    'Chocolate, leite condensado e chocolate granlado', 23.90),
+                   ('Doce', GETDATE(), 'PRESTIGIO', 'Chocolate coberta com côco', 23.90)]
+
+    cursor.executemany("INSERT INTO pizza( TIPO_PIZ,DATA_CRIACAO, NOME_PIZ, INGREDIENTES, VALOR_CUSTO) \
+                        values (?, ?, ?, ?, ?)", lista_pizza)
+
+    cursor.connection.commit()
+    print('\nPizzas inseridos com sucesso!')
