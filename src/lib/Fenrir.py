@@ -185,7 +185,7 @@ def todosRelatorios():
             limparTelaOS()
         elif opcaoRelat == 3:
             cursor.execute(
-                "select distinct codigo_piz, tipo_piz, data_criacao, data_inativacao, nome_piz, ingredientes, valor_custo,valor_custo, (valor_custo * 1.15) as pizza_media,(valor_custo * 1.25) as pizza_grande,(valor_custo * 1.35) as pizza_gigante from pizza")
+                "select distinct codigo_piz, tipo_piz, data_criacao, data_inativacao, nome_piz, ingredientes, valor_custo, (valor_custo * 1.15) as pizza_media,(valor_custo * 1.25) as pizza_grande,(valor_custo * 1.35) as pizza_gigante from pizza")
             print('\nRelatorio Pizzas ')
             all_rows = cursor.fetchall()
             for user1 in all_rows:
@@ -681,12 +681,12 @@ def geraPedido():
             listar_pizzas()
             tamanho = input('qual o tamanho? (gg,g,m)')
             codPizza = int(input('\n\n\nQual o codigo da pizza solicitada? '))
-            pizza = selectPiza(codPizza)
+            pizza = selectPizza(codPizza)
             opMet = input('Deseja um segundo sabor? s|n')
             if opMet == 's':
                 listar_pizzas()
                 codPizza2 = int(input('\n\n\nQual o codigo da pizza solicitada? '))
-                pizza2 = selectPiza(codPizza2)
+                pizza2 = selectPizza(codPizza2)
                 valorPedido = CalculaValorFinalPizza(tamanho,pizza,1,pizza2)
                 ultimoid = ultimoIdPedido()
                 cursor.execute("insert into pedido values(?,?,?,?,?)",(ultimoid,GETDATE(),GETTIME(),dados[0],valorPedido))
@@ -721,7 +721,7 @@ def geraPedido():
         print('Redirecionando para cadastro')
         novo_cliente()
 
-def selectPiza(id):
+def selectPizza(id):
     cursor.execute("SELECT DISTINCT NOME_PIZ FROM PIZZA WHERE CODIGO_PIZ = ?", (id,))
     PIZZA = cursor.fetchone()
     print('Pizza Selecionada: ',PIZZA[0])
@@ -731,7 +731,7 @@ def selectPiza(id):
     else:
         listar_pizzas()
         id = int(input('\n\n\nQual o codigo da pizza solicitada? '))
-        selectPiza(id)
+        selectPizza(id)
 
 def ultimoIdPedido():
     cursor.execute("SELECT DISTINCT  MAX(COD_PED) + 1 FROM PEDIDO ")
