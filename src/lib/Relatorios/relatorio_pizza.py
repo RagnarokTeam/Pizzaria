@@ -3,10 +3,7 @@
 
 # variavel "cursor" pode ser alterada para qualquer outro nome de sua escolha
 cursor = Bifrost.connection.cursor()
-cursor.execute("select codigo_piz, tipo_piz, data_criacao, data_inativacao, nome_piz, ingredientes, valor_custo,
-valor_custo, (valor_custo * 1.15) as pizza_media,
-(valor_custo * 1.25) as pizza_grande,
-(valor_custo * 1.35) as pizza_gigante from pizza")
+cursor.execute("select distinct codigo_piz, tipo_piz, data_criacao, data_inativacao, nome_piz, ingredientes, valor_custo,valor_custo, (valor_custo * 1.15) as pizza_media,(valor_custo * 1.25) as pizza_grande,(valor_custo * 1.35) as pizza_gigante from pizza")
 user1 = cursor.fetchone()  # retrieve the first row
 print('\nImpressao de campo a campo')
 print('Cod: ', codigo_piz[0])

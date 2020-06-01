@@ -8,7 +8,7 @@ Observações.: 2020-05-22 - [R00] Criação do Arquivo - Versao 1.00
               ...
 Referencias: imcorporando funções cliente criado pela camila
 """
-from datetime import datetime
+from datetime import datetime,timedelta
 from src.db.Asgard import Bifrost
 #from src.lib.Clientes import funcoesCliente
 #from src.lib.Pizzas import funcoesPizza
@@ -16,7 +16,17 @@ import os
 
 def GETDATE():
     data = datetime.now().strftime("%d/%m/%Y")
+
     return data
+
+def GETTIME():
+    data = datetime.now().strftime("%H:%M")
+    return data
+
+def GETTIMEADD():
+    data = (datetime.now() + timedelta(minutes=50)).strftime("%H:%M")
+    return data
+
 
 def selectValorPadraoPizza(Tamanho,nomePizza):
     # inicialmente vou usar apenas por nome mas o correto é se usar o cod
@@ -29,10 +39,10 @@ def selectValorPadraoPizza(Tamanho,nomePizza):
 
     # verificando qual a porcentagem usar
     if data is not None:
-        valorPadrao = data[2]
-        if Tamanho == 'gigante':
+        valorPadrao = int(data[2])
+        if Tamanho == 'gg':
             valorPadrao = valorPadrao * 1.35
-        elif Tamanho == 'grande':
+        elif Tamanho == 'g':
             valorPadrao = valorPadrao * 1.25
         else:
             valorPadrao = valorPadrao * 1.15
@@ -137,7 +147,7 @@ def menuPrincipal():
     while opcao != 9:
         cabecalhoMenu()
         print('MENU PRINCIPAL')
-        print('[1] - Cliente Cadastrado')
+        print('[1] - Iniciar Pedido')
         print('[2] - Cliente Novo')
         print('[3] - Relatorios')
         print('[4] - Gerenciar Clientes')
@@ -147,8 +157,7 @@ def menuPrincipal():
         print('Opcao escolhido foi: ', opcao)
 
         if opcao == 1:
-            input('Digite o numero de telefone do cliente: ')
-        #    menuCriaBasePadrao()
+            geraPedido()
         elif opcao == 2:
             cadastroCliente()
         elif opcao == 3:
@@ -159,7 +168,7 @@ def menuPrincipal():
             limparTelaOS()
         elif opcao == 5:
             limparTelaOS()
-            funcoesPizza.menu_pizzas()
+            menu_pizzas()
             limparTelaOS()
         else:
             print('Opcao invalida!')
@@ -179,9 +188,8 @@ def pausa():
 def listar_clientes():  # lista o código e nome dos clientes
     cursor.execute("SELECT CODIGO_CLI, NOME_CLI FROM cliente WHERE DATA_INATIVO IS NULL")
     print("Cód  |  Nome  ")
-    for coluna in cursor.fetchall():
-        print(coluna)
-
+    for row in cursor.fetchall():
+        print('{0}, {1}'.format(row[0], row[1]))
     cursor.connection.commit()
     pause()
 
@@ -217,7 +225,7 @@ def novo_cliente():  # função para cadastrar um novo cliente
     cid = (input("Cidade: "))
     uf = (input("UF: "))
 
-    novoCliente = [(telf, telc, nome, end, num, comp, bai, cid, uf, lETDATE())]  # lista com os dados obtidos
+    novoCliente = [(telf, telc, nome, end, num, comp, bai, cid, uf, GETDATE())]  # lista com os dados obtidos
 
     cursor.executemany("INSERT INTO cliente(TEL_FIXO, TEL_CEL, NOME_CLI, ENDERECO, NR_END, COMPLEMENTO, \
                         BAIRRO, CIDADE, UF, DATA_CADASTRO) \
@@ -406,7 +414,7 @@ def ativar_cliente():  # ativação de cliente
 
 def desativar_cliente():  # desativando cliente
     codi = (input("Digite o código do cliente que deseja desativar: "))
-    cursor.execute("UPDATE cliente SET DATA_INATIVO = ? WHERE CODIGO_CLI = ?", (lETDATE(), codi))
+    cursor.execute("UPDATE cliente SET DATA_INATIVO = ? WHERE CODIGO_CLI = ?", (GETDATE(), codi))
 
     cursor.connection.commit()
 
@@ -529,10 +537,11 @@ def apagar_pizza():  # funçao para apagar pizza do banco caso cadastrada errado
 
 
 def listar_pizzas():  # lista o código, tipo e nome das pizzas
-    cursor.execute("SELECT CODIGO_PIZ, TIPO_PIZ, NOME_PIZ FROM pizza")
+    cursor.execute("SELECT CODIGO_PIZ, TIPO_PIZ, NOME_PIZ FROM PIZZA WHERE DATA_INATIVO IS NULL")
     print("Cód| Tipo  | Nome  ")
-    for coluna in cursor.fetchall():
-        print(coluna)
+    for row in cursor.fetchall():
+        print('{0}, {1}, {2}'.format(row[0], row[1], row[2]))
+    pause()
 
 
 # menu gerenciador de pizzas
@@ -577,3 +586,73 @@ def menu_pizzas():
         pausa()
         limparTelaOS()
         menu_pizzas()
+def geraPedido():
+    tel = input('Digite o numero de telefone do cliente: ')
+    cursor.execute("SELECT DISTINCT * FROM CLIENTE WHERE TEL_FIXO = ? OR TEL_CEL = ?",(tel,tel,))
+    dados = cursor.fetchone()
+    if dados is not None:
+        print('Cliente: ',dados[3])
+        print('Rua:', dados[4],'-',dados[5])
+        op = input('Os dados estão certos? deseja continuar? s|n')
+
+        if op == 's':
+            limparTelaOS()
+            listar_pizzas()
+            tamanho = input('qual o tamanho? (gg,g,m)')
+            codPizza = int(input('\n\n\nQual o codigo da pizza solicitada? '))
+            pizza = selectPiza(codPizza)
+            opMet = input('Deseja um segundo sabor? s|n')
+            if opMet == 's':
+                listar_pizzas()
+                codPizza2 = int(input('\n\n\nQual o codigo da pizza solicitada? '))
+                pizza2 = selectPiza(codPizza2)
+                valorPedido = CalculaValorFinalPizza(tamanho,pizza,1,pizza2)
+                ultimoid = ultimoIdPedido()
+                cursor.execute("insert into pedido values(?,?,?,?,?)",(ultimoid,GETDATE(),GETTIME(),dados[0],valorPedido))
+                cursor.connection.commit()
+                cursor.execute("insert into itens_pedido values(?,?,?,?)",(ultimoid,1,codPizza,tamanho))
+                cursor.connection.commit()
+                cursor.execute("insert into itens_pedido values(?,?,?,?)",(ultimoid, 2, codPizza2, tamanho))
+                cursor.connection.commit()
+                print('Pedido realidado com sucesso!')
+                print('No valor de: %.2f' % valorPedido)
+                print('Sabores: ',pizza,', ',pizza2)
+                print('Seu pedido está previsto para ser feito até às ',GETTIMEADD())
+
+                pause()
+            elif opMet == 'n':
+                valorPedido = CalculaValorFinalPizza(tamanho, pizza)
+                ultimoid = ultimoIdPedido()
+                cursor.execute("insert into pedido values(?,?,?,?,?)",
+                               (ultimoid, GETDATE(), GETTIME(), dados[0], valorPedido))
+                cursor.connection.commit()
+                print('Pedido realidado com sucesso!')
+                print('No valor de: %.2f' % valorPedido)
+                print('Sabor: ', pizza)
+                print('Seu pedido está previsto para ser feito até às ', GETTIMEADD())
+
+                pause()
+        else:
+            limparTelaOS()
+            geraPedido()
+    else:
+        print('Não foi encontrado cliente com esse telefone!')
+        print('Redirecionando para cadastro')
+        novo_cliente()
+
+def selectPiza(id):
+    cursor.execute("SELECT DISTINCT NOME_PIZ FROM PIZZA WHERE CODIGO_PIZ = ?", (id,))
+    PIZZA = cursor.fetchone()
+    print('Pizza Selecionada: ',PIZZA[0])
+    conf=input('O sabor da pizza está correto? s|n')
+    if conf == 's':
+        return PIZZA[0]
+    else:
+        listar_pizzas()
+        id = int(input('\n\n\nQual o codigo da pizza solicitada? '))
+        selectPiza(id)
+
+def ultimoIdPedido():
+    cursor.execute("SELECT DISTINCT  MAX(COD_PED) + 1 FROM PEDIDO ")
+    id = cursor.fetchone()
+    return  id[0]

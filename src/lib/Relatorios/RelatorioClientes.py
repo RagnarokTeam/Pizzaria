@@ -23,7 +23,7 @@ print('CODIGO_CLI:', user1[0])  # Imprime o primeiro campo
 print('NOME_CLI:', user1[1])  # Imprime o segundo campo
 print('DATA_PED:', user1[2])  # Imprime o terceiro campo
 print('TOTAL:', user1[3])  # Imprime o quarto campo
-(number_of_rows,)=cursor.fetchone()
+
 
 print('\nImpressao de toda as tuplas')
 all_rows = cursor.fetchall()

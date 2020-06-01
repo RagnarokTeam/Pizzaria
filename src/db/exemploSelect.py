@@ -34,3 +34,9 @@ for row in all_rows:
 
 # fim da bifrost
 Bifrost.connection.close()
+
+from datetime import datetime,timedelta
+def GETTIME():
+    data = (datetime.now() + timedelta(minutes=50)).strftime("%H:%M")
+    print(data)
+GETTIME()
