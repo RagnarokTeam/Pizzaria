@@ -883,7 +883,8 @@ def selectPizza(id):
     cursor.execute("SELECT DISTINCT NOME_PIZ FROM PIZZA WHERE CODIGO_PIZ = ?", (id,))
     PIZZA = cursor.fetchone()
     print('Pizza Selecionada: ',PIZZA[0])
-    conf=input('O sabor da pizza está correto?\n [1] - Sim\n [2] - Não\n')
+    conf = 0
+    conf= eval (input('O sabor da pizza está correto?\n [1] - Sim\n [2] - Não\n'))
     if conf == 1:
         return PIZZA[0]
     else:
