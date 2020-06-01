@@ -1034,7 +1034,7 @@ def itens_pedido():
 	CONSTRAINT FK_ITENSPEDIDO_CODIGOPIZ FOREIGN KEY(CODIGO_PIZ) REFERENCES PIZZA(CODIGO_PIZ));')
 
 
-def_relat_cliente():
+def relat_cliente():
 
     datainicial = '23/05/2020'  # input("Digite a data inicial")
     datafinal = '27/12/2020'  # input("Digite a data final")
