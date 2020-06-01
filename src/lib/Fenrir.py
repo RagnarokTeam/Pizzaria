@@ -123,21 +123,102 @@ def todosRelatorios():
 
 
     while opcaoRelat != 5:
-        print('[1] - Dados do Clientes')
-        print('[2] - Detalhamentos cliente')
-        print('[3] - Pizzas')
-        print('[4] - Pedidos')
+        print('[1] - Maior e Menor Receita')
+        print('[2] - Detalhamentos clientes')
+        print('[3] - Pizzas cadastradas')
+        print('[4] - Quantidade de pedidos por cliente')
         print('[6] - Voltar')
         opcaoRelat = eval(input('Digite qual relatório você quer abrir: '))
 
         if opcaoRelat == 1:
-            input('que')
+            cursor.execute(
+                "SELECT A.COD_PED,A.DATA_PED,A.HORA_PED,MAX(A.TOTAL_PED),B.TAMANHO,C.NOME_PIZ FROM PEDIDO A INNER JOIN ITENS_PEDIDO B ON A.COD_PED = B.COD_PED INNER JOIN PIZZA C ON B.CODIGO_PIZ = C.CODIGO_PIZ GROUP BY TAMANHO")
+            print('\nRELATÓRIO DE MAIOR RECEITA POR TAMANHO')
+            all_rows = cursor.fetchall()
+            for user1 in all_rows:
+                print('------------------------------------------------------------')
+                print('Codigo Pedido:', user1[0])  # Imprime o primeiro campo
+                print('Data Pedido:', user1[1])  # Imprime o segundo campo
+                print('Hora Pedido:', user1[2])  # Imprime o terceiro campo
+                print('Valor de Venda:', user1[3])  # Imprime o terceiro campo
+                print('Tamanho:', user1[4])  # Imprime o quarto campo
+                print('Nome da Pizza:', user1[5])  # Imprime o quarto campo
+            print('\n\n')
+
+            cursor.execute(
+                "SELECT A.COD_PED,A.DATA_PED,A.HORA_PED,min(A.TOTAL_PED),B.TAMANHO,C.NOME_PIZ FROM PEDIDO A INNER JOIN ITENS_PEDIDO B ON A.COD_PED = B.COD_PED INNER JOIN PIZZA C ON B.CODIGO_PIZ = C.CODIGO_PIZ GROUP BY TAMANHO")
+            print('\n\n')
+            print('\nRELATÓRIO DE MENOR RECEITA POR TAMANHO')
+            all_rows = cursor.fetchall()
+            for user1 in all_rows:
+                print('------------------------------------------------------------')
+                print('Codigo Pedido:', user1[0])  # Imprime o primeiro campo
+                print('Data Pedido:', user1[1])  # Imprime o segundo campo
+                print('Hora Pedido:', user1[2])  # Imprime o terceiro campo
+                print('Valor de Venda:', user1[3])  # Imprime o terceiro campo
+                print('Tamanho:', user1[4])  # Imprime o quarto campo
+                print('Nome da Pizza:', user1[5])  # Imprime o quarto campo
+            print('\n\n')
+            pause()
+            limparTelaOS()
         elif opcaoRelat == 2:
-            input('oi')
+            cursor.execute(
+                "select CODIGO_CLI,TEL_FIXO,TEL_CEL,NOME_CLI,ENDERECO,NR_END,COMPLEMENTO,BAIRRO,CIDADE,UF,DATA_CADASTRO, DATA_INATIVO from cliente")
+            print('\nRELATÓRIO DE CLIENTES')
+            all_rows = cursor.fetchall()
+            for user1 in all_rows:
+                print('------------------------------------------------------------')
+                print('Codigo Cliente:', user1[0])  # Imprime o primeiro campo
+                print('Telefone:', user1[1])  # Imprime o segundo campo
+                print('Celular:', user1[2])  # Imprime o terceiro campo
+                print('Nome:', user1[3])  # Imprime o terceiro campo
+                print('Endereço:', user1[4])  # Imprime o quarto campo
+                print('Número:', user1[5])  # Imprime o quarto campo
+                print('Complemento:', user1[6])  # Imprime o quarto campo
+                print('Bairro:', user1[7])  # Imprime o quarto campo
+                print('Cidade:', user1[8])  # Imprime o quarto campo
+                print('UF:', user1[9])  # Imprime o quarto campo
+                print('Data Cadastro:', user1[10])  # Imprime o quarto campo
+                print('Data Inativo:', user1[11])  # Imprime o quarto campo
+            print('\n\n')
+            pause()
+            limparTelaOS()
         elif opcaoRelat == 3:
-            input('hello')
+            cursor.execute(
+                "select distinct codigo_piz, tipo_piz, data_criacao, data_inativacao, nome_piz, ingredientes, valor_custo,valor_custo, (valor_custo * 1.15) as pizza_media,(valor_custo * 1.25) as pizza_grande,(valor_custo * 1.35) as pizza_gigante from pizza")
+            print('\nRelatorio Pizzas ')
+            all_rows = cursor.fetchall()
+            for user1 in all_rows:
+                print('\n\n')
+                print('------------------------------------------------------------')
+                print('Cod: ', user1[0])
+                print('Tipo: ', user1[1])
+                print('Data criação: ', user1[2])
+                print('Data Inativação: ', user1[3])
+                print('Nome da pizza: ', user1[4])
+                print('Ingredientes: ', user1[5])
+                print('Valor custo: ', user1[6])
+                print('Valor pizza média: %.2f' % user1[7])
+                print('Valor pizza grande: %.2f'% user1[8])
+                print('Valor pizza gigante: %.2f'% user1[9])
+
+                print('\n\n')
+            pause()
+            limparTelaOS()
         elif opcaoRelat == 4:
-            input('hehe')
+            cursor.execute(
+                "select distinct  A.CODIGO_CLI, NOME_CLI, sum(b.CODIGO_CLI) AS TOTAL, sum(TOTAL_PED) from cliente a inner join pedido b on a.CODIGO_CLI = b.CODIGO_CLI group by a.codigo_cli, nome_cli order by data_ped")
+
+            all_rows = cursor.fetchall()
+            print('RELATORIO DE CLIENTES QUE REALIZARAM PEDIDOS\n')
+            for row in all_rows:
+                print('CODIGO CLIENTE: {0}\n NOME CLIENTE: {1}\n QTD PEDIDOS: {2} \n VALOR GASTO: R$ {3}'.format(row[0],
+                                                                                                             row[1],
+                                                                                                             row[2],
+                                                                                                             row[3]))
+                print('\n\n')
+            pause()
+            limparTelaOS()
         else:
             menuPrincipal()
 
@@ -537,7 +618,7 @@ def apagar_pizza():  # funçao para apagar pizza do banco caso cadastrada errado
 
 
 def listar_pizzas():  # lista o código, tipo e nome das pizzas
-    cursor.execute("SELECT CODIGO_PIZ, TIPO_PIZ, NOME_PIZ FROM PIZZA WHERE DATA_INATIVO IS NULL")
+    cursor.execute("SELECT CODIGO_PIZ, TIPO_PIZ, NOME_PIZ FROM PIZZA WHERE DATA_INATIVACAO IS NULL")
     print("Cód| Tipo  | Nome  ")
     for row in cursor.fetchall():
         print('{0}, {1}, {2}'.format(row[0], row[1], row[2]))
