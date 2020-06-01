@@ -1034,4 +1034,23 @@ def itens_pedido():
 	CONSTRAINT FK_ITENSPEDIDO_CODIGOPIZ FOREIGN KEY(CODIGO_PIZ) REFERENCES PIZZA(CODIGO_PIZ));')
 
 
+def_relat_cliente():
+
+    datainicial = '23/05/2020'  # input("Digite a data inicial")
+    datafinal = '27/12/2020'  # input("Digite a data final")
+    cursor.execute("select codigo_cli, nome_cli from cliente where data_cadastro between " + datainicial + " and " + datafinal)
+
+    print('\nRELATÓRIO DE CLIENTES ENTRE', datainicial, 'E', datafinal)
+    all_rows = cursor.fetchall()
+    for user1 in all_rows:
+        print('------------------------------------------------------------')
+        print('Código do cliente:', user1[0])  # Imprime o primeiro campo
+        print('Nome do cliente:', user1[1])  # Imprime o segundo campo
+
+        print('\n')
+    cursor.connection.commit()
+    pause()
+    limparTelaOS()
+
+
 
