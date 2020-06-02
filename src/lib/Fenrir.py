@@ -177,8 +177,10 @@ def todosRelatorios():
             pause()
             limparTelaOS()
         elif opcaoRelat == 2:
+            datainicial = input("Digite a data inicial ex: dd/mm/yyyy")
+            datafinal = input("Digite a data final ex: dd/mm/yyyy")
             cursor.execute(
-                "select CODIGO_CLI,TEL_FIXO,TEL_CEL,NOME_CLI,ENDERECO,NR_END,COMPLEMENTO,BAIRRO,CIDADE,UF,DATA_CADASTRO, DATA_INATIVO from cliente")
+                "select CODIGO_CLI,TEL_FIXO,TEL_CEL,NOME_CLI,ENDERECO,NR_END,COMPLEMENTO,BAIRRO,CIDADE,UF,DATA_CADASTRO, DATA_INATIVO from cliente where data_cadastro between ? and ?",(datainicial,datafinal))
             print('\nRELATÓRIO DE CLIENTES')
             all_rows = cursor.fetchall()
             for user1 in all_rows:
@@ -1036,9 +1038,9 @@ def itens_pedido():
 
 def relat_cliente():
 
-    datainicial = '23/05/2020'  # input("Digite a data inicial")
-    datafinal = '27/12/2020'  # input("Digite a data final")
-    cursor.execute("select codigo_cli, nome_cli from cliente where data_cadastro between " + datainicial + " and " + datafinal)
+    datainicial = eval(input("Digite a data inicial"))
+    datafinal = eval(input("Digite a data final"))
+    cursor.execute("select codigo_cli, nome_cli,data from cliente where data_cadastro between " + datainicial + " and " + datafinal)
 
     print('\nRELATÓRIO DE CLIENTES ENTRE', datainicial, 'E', datafinal)
     all_rows = cursor.fetchall()
@@ -1046,7 +1048,8 @@ def relat_cliente():
         print('------------------------------------------------------------')
         print('Código do cliente:', user1[0])  # Imprime o primeiro campo
         print('Nome do cliente:', user1[1])  # Imprime o segundo campo
-
+        print('Data Cadastrado:', user1[2])  # Imprime o segundo campo
+        print('Data Inativado:', user1[3])  # Imprime o segundo campo
         print('\n')
     cursor.connection.commit()
     pause()
